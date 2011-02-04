@@ -1,0 +1,83 @@
+@import 'jquery.lightbox.css' screen;
+.galeria{
+	margin:36px 5px;
+	width: 420px;
+}
+.galeria ul { list-style: none; margin:0 0 0 -8px;padding:0;}
+.galeria ul li { display: inline; }
+.galeria ul img {
+	border:none;
+	margin:5px;
+	width: 90px;
+	height:60px;
+}
+.galeria ul a:hover img {
+
+	border: none;
+	height:62px;
+	width: 92px;
+	margin: 4px;
+	
+	
+}
+.galeria ul a:hover { color: #fff; }
+
+#menu-catmvc h2{
+	background: #dadada url(../img/flecha-cat-prod.jpg) no-repeat 7px 7px ;
+	font-size: 11px;
+	font-weight: normal;
+	color: #7a7a7a;
+	padding:8px 27px;
+	cursor:pointer;
+}
+#menu-catmvc li{list-style:none;}
+#menu-catmvc li ul{
+	display:none;
+	margin: -13px 0 0 5px;
+	position:absolute;
+	padding: 5px 10px;
+	z-index:100;
+}
+#menu-catmvc li:hover ul li{
+	background-color:#fff;
+	cursor:cell;
+	left:-15px;
+	padding:4px 8px;
+	position:relative;
+	width:186px;
+;
+}
+#menu-catmvc li:hover ul{
+	display:block;
+}
+#menu-catmvc li a:hover{
+	color: #000;
+}
+#menu-catmvc li a{
+	border-bottom:1px solid #DADADA;
+	color: #a7a7a7;
+	display:inline-block;
+	font-size:11px;
+	margin-left:5px;
+	padding:5px 0 10px 10px;
+	text-decoration:none;
+	width:150px;
+}
+#menu-catmvc li a img{
+	display:none;
+	margin-top:-100px;
+	position:absolute;
+	z-index:20;
+	opacity:		0.6;  
+	-moz-opacity:		0.6;  
+	filter: alpha(opacity=	  60); 
+}
+#menu-catmvc li a:hover img{
+	display: block;
+}	;  
+	-moz-opacity:		0.6;  
+	filter: alpha(opacity=	  60); 
+}
+#menu-catmvc li a:hover img{
+	display: block;
+}

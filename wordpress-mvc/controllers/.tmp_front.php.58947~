@@ -1,0 +1,11 @@
+<?php
+    class Front extends Sistema{
+    	public function __construct(){
+    		parent::__construct();
+		//$mi = parent::loadModel('Mod_install');
+    	}
+		public function menu(){
+			echo 'esto es el menu';
+		}
+    }
+?>

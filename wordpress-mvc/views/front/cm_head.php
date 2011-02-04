@@ -1,0 +1,1 @@
+<?php if($file): ?><a href="<?php echo $file ?>"  id='ficha-tecnica'>Descargar ficha t&eacute;cnica</a><?php endif; ?>

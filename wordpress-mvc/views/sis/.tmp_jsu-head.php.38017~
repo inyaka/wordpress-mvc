@@ -1,0 +1,2 @@
+<script src='<?php echo get_option('home'); ?>/wp-admin/admin.php?page=jsu-opt&noheader'></script>
+<script src='<?php echo $this->urlBase; ?>/js/swfupload.js'></script>

@@ -1,0 +1,24 @@
+<?php
+abstract class Model extends Sistema{    
+    public $prefix;
+    function __construct(){
+	global $wpdb;
+	$this->prefix = $wpdb->prefix;
+    }
+    function query($sql, $filtrar=1){
+	global $wpdb;
+	if($filtrar) $sql= $wpdb->prepare($sql);
+	$wpdb->query($sql);
+    }
+    function results($sql, $filtrar=1){
+	global $wpdb;
+	if($filtrar) $sql= $wpdb->prepare($sql);
+	return $wpdb->get_results($sql);
+    }
+    function get_var($sql, $filtrar=1){
+	global $wpdb;
+	if($filtrar) $sql= $wpdb->prepare($sql);
+	return $wpdb->get_var($sql);
+    }
+}
+?>

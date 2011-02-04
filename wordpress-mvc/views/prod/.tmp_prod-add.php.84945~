@@ -1,0 +1,8 @@
+<div class='wrap'>
+	<h2>Crear Producto</h2>
+
+<form id="post" method="post" action="" enctype="multipart/form-data">
+<?php $this->uploaderForm() ?>
+<input type='submit' value='crear' />
+</form>
+</div>

@@ -1,0 +1,121 @@
+<?php
+abstract class Sistema{
+	var $rutaBase;
+	public $urlBase;
+	function __construct(){
+		$basename= split('/', plugin_basename(__FILE__));
+		$this->urlBase = WP_PLUGIN_URL.'/'.$basename[0];
+	}
+	function view($archivo,$datos=0,$return=false,$rutaView='/views'){
+		$rutaView= PATH_CM.$rutaView;
+		if($datos) extract($datos);
+		if($return){ 
+		   ob_start(); 
+		     require_once("$rutaView/$archivo.php"); 
+		     $salida = ob_get_contents(); 
+		     ob_end_clean(); 
+		     return $salida; 
+		}else{ 
+		   require_once("$rutaView/$archivo.php");
+		} 
+	}
+	function loadModel($class, $rutaModel='/models'){
+		require_once(PATH_CM.$rutaModel.'/'.strtolower($class).'.php');
+		eval('$retorno = new '.$class.'();');
+		return $retorno;
+	}
+	function post($var=0){
+		$_POST = array_map( 'stripslashes_deep', $_POST);
+	}
+	
+	function uploaderForm(){
+		$this->view('sis/uploaderForm');
+	}
+	function jsSwfUpload(){
+		$datos =array(
+			'upload_url' =>$this->urlBase 
+		);
+		$this->view('sis/jsu-opt',$datos);
+		exit();
+	}
+	function jsuHead(){		
+		$this->view('sis/jsu-head',$datos);
+	}
+	function uploadIMG(){
+		$save_path = $this->urlBase."/uploads/img";			// The path were we will save the file (getcwd() may not be reliable and should be tested in your environment)
+		$upload_name = "Filedata";
+		$max_file_size_in_bytes = 5242880;			// 2147483647 = 2GB in bytes 5242880 = 5mb
+		$extension_whitelist = array("jpg", "gif", "png");	 // Allowed file extensions
+		$valid_chars_regex = '.A-Z0-9_ !@#$%^&()+={}\[\]\',~`-'; // Characters allowed in the file name (in a Regular Expression format)
+		// Other variables
+		$MAX_FILENAME_LENGTH = 260;
+		$file_name = "";
+		$file_extension = "";
+		$uploadErrors = array(
+			0=>'archivo subido',
+			1=>'error, el archivo excede tama&ntilde;o permitido por el servidor', //por php.ini
+			2=>'error, el archivo excede el tama&ntilde;o permitido', //HTML form
+			3=>'error, parece que solo se subio parcialmente su archivo',
+			4=>'error, no existe el archivo',
+			6=>'error, perdida la carpeta temporal',
+			7=>"No upload found in \$_FILES for " . $upload_name,
+			8=>$uploadErrors[$_FILES[$upload_name]["error"]],
+			9=>'error, no se cargo su archivo',
+			10=>'error, archivo sin nombre',
+			11=>'error, archivo vacio',
+			12=>'error, nombre de archivo invalido',
+			13=>'error, existe un archivo con el mismo nombre',
+			14=>'error, extensi&oacute;n de archivo invalida',
+			15=>'error, archivo no fue grabado'
+		);
+		$error=0;
+		// Code for Session Cookie workaround
+		if (isset($_POST["PHPSESSID"])) {
+			session_id($_POST["PHPSESSID"]);
+		} else if (isset($_GET["PHPSESSID"])) {
+			session_id($_GET["PHPSESSID"]);
+		}
+		session_start();
+		// Check post_max_size (http://us3.php.net/manual/en/features.file-upload.php#73762)
+		$POST_MAX_SIZE = ini_get('post_max_size');
+		$unit = strtoupper(substr($POST_MAX_SIZE, -1));
+		$multiplier = ($unit == 'M' ? 1048576 : ($unit == 'K' ? 1024 : ($unit == 'G' ? 1073741824 : 1)));
+		$file_size = @filesize($_FILES[$upload_name]["tmp_name"]);
+		// Validate file name (for our purposes we'll just remove invalid characters)
+		$file_name = preg_replace('/[^'.$valid_chars_regex.']|\.+$/i', "", basename($_FILES[$upload_name]['name']));
+		// Validate file extension
+		$path_info = pathinfo($_FILES[$upload_name]['name']);
+		$file_extension = $path_info["extension"];
+		$is_valid_extension = false;
+		foreach ($extension_whitelist as $extension) {
+			if (strcasecmp($file_extension, $extension) == 0) {
+				$is_valid_extension = true;
+				break;
+			}
+		}		
+		// VALIDACIONES
+		if ((int)$_SERVER['CONTENT_LENGTH'] > $multiplier*(int)$POST_MAX_SIZE && $POST_MAX_SIZE) $error = 2;
+		if (!isset($_FILES[$upload_name])) $error = 7;	// Validate the upload
+		if (isset($_FILES[$upload_name]["error"]) && $_FILES[$upload_name]["error"] != 0)$error = 8;
+		if (!isset($_FILES[$upload_name]["tmp_name"]) || !@is_uploaded_file($_FILES[$upload_name]["tmp_name"]))$error = 9;
+		if (!isset($_FILES[$upload_name]['name'])) $error = 10;	
+		if (!$file_size || $file_size > $max_file_size_in_bytes)  $error = 1;	
+		if ($file_size <= 0)   $error = 11;
+		if (strlen($file_name) == 0 || strlen($file_name) > $MAX_FILENAME_LENGTH) $error = 12;
+		if (file_exists($save_path . $file_name))  $error = 13;// Validate that we won't over-write an existing file
+		if (!$is_valid_extension)  $error = 14;
+		if ($error){
+			if($error==2) header("HTTP/1.1 500 Internal Server Error");
+			echo $uploadErrors[$error];
+			exit(0);
+		}else if (!@move_uploaded_file($_FILES[$upload_name]["tmp_name"], $save_path.$file_name)){
+			$error = 15;
+			echo $uploadErrors[$error];
+			exit(0);
+		}else{
+			echo $uploadErrors[$error];	
+		}
+	}
+	
+}
+?>

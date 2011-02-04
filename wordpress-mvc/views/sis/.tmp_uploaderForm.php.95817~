@@ -1,0 +1,1 @@
+<label for='image'>Seleccionar imagen</label><input type='file' name='image' id='image' />

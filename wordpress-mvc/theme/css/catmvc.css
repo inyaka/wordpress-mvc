@@ -1,0 +1,22 @@
+p label{
+	display: inline-block;
+	width: 100px;
+}
+input, select{
+	 width:120px;
+}
+.cat-mvc-admin dl{color:#464646;}
+h2, .cat-mvc-admin dl dt{font:italic normal bold 24px Georgia,"Times New Roman","Bitstream Charter",Times,serif ;text-shadow:2px 2px 2px #aaa;}
+.cat-mvc-admin dl dd{}
+.cat-mvc-admin dl dd table{table-layout:fixed;}
+.cat-mvc-admin dl dd tr{border-bottom: 1px solid #444;}
+.cat-mvc-admin dl dd th{font:normal normal bold 14px Georgia,"Times New Roman","Bitstream Charter",Times,serif;}
+.cat-mvc-admin dl dd td{border-bottom: 1px solid #444;padding: 4px;empty-cells:show;text-align:center;}
+.cat-mvc-admin dl dd td:first-child img{height:60px;width:80px;}
+.alerta{padding:10px;background-color:#ffe;font:italic normal bold 14px Georgia,"Times New Roman","Bitstream Charter",Times,serif ;text-shadow:2px 2px 2px #aaa;}
+
+.cat-mvc-admin-col1{width: 80px;}
+.cat-mvc-admin-col2{width: 150px;}
+.cat-mvc-admin-col3{width: 400px;}
+.cat-mvc-admin-col4{width: 80px}
+#wpbody-content .td-left{text-align:left;}
